@@ -40,7 +40,6 @@
         key_11 = document.getElementById("key_11").value;
         key_12 = document.getElementById("key_12").value;
         var lnglatXY = new AMap.LngLat(key_11,key_12);
-        //document.getElementById('result').innerHTML = "您输入的是：" + key_1;
         //加载地理编码插件
         mapObj.plugin(["AMap.Geocoder"], function() {
             MGeocoder = new AMap.Geocoder({

@@ -4,7 +4,6 @@ $(function(){
     var height = $(document.body).height();
     $("#map").css("height",(height-5)+"px");
     $("#result").css("height",(height-100)+"px");
-
     $("#address").val("");
     $("#result").on("click","li",function(){
         var point = $(this).find(".point").text();
@@ -52,21 +51,6 @@ function doSearch(){
             var poiArr = result.poiList.pois;
             var str = "<ul>";
             for(var i=0;i<poiArr.length;i++){
-                //在地图上创建标注点
-                marker = new AMap.Marker({
-                    icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png"
-                });
-                marker.setPosition(new AMap.LngLat(poiArr[i].location.lng,poiArr[i].location.lat));
-                marker.setMap(map);
-                marker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
-                    offset: new AMap.Pixel(3, 0),//修改label相对于maker的位置
-                    content: String.fromCharCode(65+i)
-                });
-                marker.content = poiArr[i].name+"<br/>"+poiArr[i].address;
-                marker.on('click', markerClick);
-//                    marker.emit('click', {target:marker});
-                markers.push(marker);
-
                 str+='<li>';
                 str+='<div class="res-data">';
                 str+='<div class="left res-marker">';
@@ -75,7 +59,7 @@ function doSearch(){
                 str+='<div class="left res-address">';
                 str+='<div class="title">'+poiArr[i].name+'</div>';
                 str+='<div>地址：<span class="rout">'+poiArr[i].address+'</span></div>';
-                str+='<div>坐标：<span class="point">'+poiArr[i].location.lng+","+poiArr[i].location.lat+'</span></div>';
+                // str+='<div>坐标：<span class="point">'+poiArr[i].location.lng+","+poiArr[i].location.lat+'</span></div>';
                 str+='</div>';
                 str+='<div class="clearfix"></div>';
                 str+='</div>';
