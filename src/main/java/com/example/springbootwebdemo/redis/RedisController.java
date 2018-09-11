@@ -1,67 +1,75 @@
 package com.example.springbootwebdemo.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.core.types.RedisClientInfo;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import java.util.Iterator;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-@Controller
+@RequestMapping("redis")
+@RestController
 public class RedisController {
     @Autowired
-    StringRedisTemplate template;
+    private StringRedisTemplate stringRedisTemplate;
     @Autowired
-    RedisConnectionFactory factory;
-    @Autowired
-    RedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
-    @RequestMapping("/redis")
-    @ResponseBody
-    public void redis(){
-        ListOperations listOperations = redisTemplate.opsForList();
-        listOperations.leftPush("session","tom");
-        listOperations.leftPush("session","bob");
-        listOperations.leftPush("session","ka");
-        List sessions = listOperations.range("session", 0, listOperations.size("session"));
-        Iterator iterator =  sessions.iterator();
-        while (iterator.hasNext()){
-            System.out.println("result"+iterator.next());
-        }
+    @RequestMapping("/strRestTemplate")
+    public String strRestTemplate(){
 
-        System.out.printf("result="+template.hasKey("test"));
+        stringRedisTemplate.execute(new RedisCallback<Object>() {
+            @Override
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                connection.openPipeline();
+                return connection;
+            }
+        });
+        ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
+        valueOperations.set("strRedis","StringRedisTemplate");
+        System.out.println(valueOperations.get("strRedis"));
+        return "StringRedisTemplate success!";
     }
 
-    public static void main(String [] args){
-        //连接本地的 Redis 服务
-      /*  Jedis jedis = new Jedis("47.93.20.45",6379);
-        System.out.println("连接成功");
-        //查看服务是否运行
-        System.out.println("服务正在运行: "+jedis.ping());
-        jedis.set("runoobkey", "www.runoob.com");
-        // 获取存储的数据并输出
-        System.out.println("redis 存储的字符串为: "+ jedis.get("runoobkey"));
-        System.out.println("----------------------------------------");
-        //存储数据到列表中
-        jedis.lpush("site-list", "Runoob");
-        jedis.lpush("site-list", "Google");
-        jedis.lpush("site-list", "Taobao");
-        // 获取存储的数据并输出
-        List<String> list = jedis.lrange("site-list", 0 ,2);
-        for(int i=0; i<list.size(); i++) {
-            System.out.println("列表项为: "+list.get(i));
+    @RequestMapping("/operation")
+    public String test(){
+        //操作string,需要被序列化转换，建议使用StringRedisTemplate
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        valueOperations.set("redisstr","hah",1000, TimeUnit.HOURS);
+        System.out.println(valueOperations.get("redisstr"));
+
+        //List设置
+        ListOperations listOperations = redisTemplate.opsForList();
+        listOperations.leftPush("redisList","redisList");
+        Object redisList = listOperations.leftPop("redisList");
+        System.out.println("----"+redisList);
+
+        //redis set集合
+        SetOperations setOperations = redisTemplate.opsForSet();
+        Long add = setOperations.add("redisSet", "redisSet");
+        System.out.println("----"+setOperations.pop("redisSet"));
+
+        //redis hash
+        HashOperations hashOperations = redisTemplate.opsForHash();
+        hashOperations.hasKey("hashRedis", "hashRedis");
+        System.out.println("-------"+hashOperations.entries("hashRedis"));
+
+        //redisTemplate.afterPropertiesSet();在配置文件设置完成之后使用
+        //开启 事务
+//        redisTemplate.multi();
+//        redisTemplate.discard();
+
+        List <RedisClientInfo> clientList = redisTemplate.getClientList();//获取连接redis数据库信息
+        for (RedisClientInfo clientInfo:clientList ){
+            System.out.printf("--"+clientInfo.toString()+"events="+clientInfo.getEvents()+"\n"
+            +"port="+clientInfo.getAddressPort()+"name="+clientInfo.getName()+clientInfo.getFileDescriptor()+
+                    clientInfo.getFlags()+clientInfo.getLastCommand()+clientInfo.getAge()+clientInfo.getBufferLength()+
+                    clientInfo.getDatabaseId());
         }
-        System.out.println("----------------------------------------");
-        // 获取数据并输出
-        Set<String> keys = jedis.keys("*");
-        Iterator<String> it=keys.iterator() ;
-        while(it.hasNext()){
-            String key = it.next();
-            System.out.println(key);
-        }*/
+        return "test";
+
     }
 }
