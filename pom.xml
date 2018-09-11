@@ -49,6 +49,14 @@
             <artifactId>druid</artifactId>
             <version>1.0.14</version>
         </dependency>
+
+        <!--alipay-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.3.49.ALL</version>
+        </dependency>
+
         <!--kafka-->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
