@@ -1,8 +1,18 @@
 package com.example.springbootwebdemo.pay.wechatpay.service.impl;
 
+import com.example.springbootwebdemo.pay.wechatpay.config.PayCommonUtil;
 import com.example.springbootwebdemo.pay.wechatpay.config.WechatConfig;
 import com.example.springbootwebdemo.pay.wechatpay.service.WechatPayService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -15,6 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import static com.example.springbootwebdemo.pay.wechatpay.config.MD5Util.createSign;
+import static com.example.springbootwebdemo.pay.wechatpay.config.XMLUtil.SortedMaptoXml;
 
 @Service
 public class WechatPayServiceImpl implements WechatPayService {
@@ -174,7 +187,7 @@ public class WechatPayServiceImpl implements WechatPayService {
             Map<String, String> map;
             try {
                 map = PayCommonUtil.doXMLParse(result);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 logger.error("微信退款状态返回值解析有误");
                 resultMap.put("code", "202");
@@ -279,7 +292,7 @@ public class WechatPayServiceImpl implements WechatPayService {
         Map<String, String> map = null;
         try {
             map = PayCommonUtil.doXMLParse(result);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return map;

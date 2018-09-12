@@ -10,8 +10,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -25,10 +23,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyStore;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class PayCommonUtil {
 
-    private static final Logger logger = LogManager.getLogger(PayCommonUtil.class);
+    private static final Logger logger = Logger.getLogger(PayCommonUtil.class.getName());
 
     //微信参数配置
     private static String API_KEY = WechatConfig.APP_KEY;
@@ -231,8 +230,7 @@ public class PayCommonUtil {
             try {
                 HttpEntity entity = response.getEntity();
 
-                logger.info("----------------------------------------");
-                logger.info(response.getStatusLine());
+                logger.info(response.getStatusLine().toString());
                 if (entity != null) {
                     logger.info("Response content length: " + entity.getContentLength());
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent()));

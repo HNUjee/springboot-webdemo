@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@RequestMapping("redis")
-@RestController
+//@RequestMapping("redis")
+//@RestController
 public class RedisController {
-    @Autowired
+//    @Autowired
     private StringRedisTemplate stringRedisTemplate;
-    @Autowired
+//    @Autowired
     private RedisTemplate redisTemplate;
 
     @RequestMapping("/strRestTemplate")
