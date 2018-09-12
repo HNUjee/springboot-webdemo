@@ -3,7 +3,8 @@ package com.example.springbootwebdemo.pay.alipay.controller;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.example.springbootwebdemo.pay.alipay.config.AlipayConfig;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+@Api(value = "aliPayController", tags = {"阿里支付调用类"})
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/alipay")
@@ -25,6 +27,7 @@ public class aliPayController {
      * @throws IOException
      * @returnAlipayClient
      */
+    @ApiOperation(value = "支付宝支付成功后.回调该接口")
     @RequestMapping(value = "notify", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public String notify(HttpServletRequest request) {

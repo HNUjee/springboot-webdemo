@@ -2,7 +2,11 @@ package com.example.springbootwebdemo.ueditor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,13 +14,19 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
-@RequestMapping("/ueditor")
+@Api(value = "UEditorController", tags = {"富文本控制器"})
 @RestController
 public class UEditorController {
+/*    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "userId", value = "用户ID", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType="query", name = "password", value = "旧密码", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "newPassword", value = "新密码", required = true, dataType = "String")
+    })*/
     /**
      * @Description 获取config.json配置文件
      */
-    @RequestMapping("getConfig")
+    @ApiOperation(value = "获取config.json配置文件")
+    @PostMapping("getConfig")
     public void getConfig(HttpServletResponse response){
         org.springframework.core.io.Resource res = new ClassPathResource("config.json");
         InputStream is = null;
@@ -48,7 +58,10 @@ public class UEditorController {
      * 富文本上传的文件地址
      * @param files
      */
-    @RequestMapping("upload")
+    @ApiOperation(value = "upload", notes = "富文本上传的文件地址")
+    @ApiImplicitParam(value = "富文本上传的文件地址", required = true, paramType = "MultipartFile[]", dataType = "" +
+            "String")
+    @PostMapping("upload")
     public String upload(@RequestParam("upfile") MultipartFile[] files){
         FileOutputStream outputStream=null;
         try {

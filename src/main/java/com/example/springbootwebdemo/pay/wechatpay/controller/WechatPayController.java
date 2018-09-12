@@ -1,11 +1,14 @@
 package com.example.springbootwebdemo.pay.wechatpay.controller;
 
 import com.example.springbootwebdemo.pay.wechatpay.config.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jdom.JDOMException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import sun.misc.BASE64Decoder;
@@ -25,6 +28,7 @@ import java.util.logging.Logger;
 
 import static sun.security.x509.CertificateAlgorithmId.ALGORITHM;
 
+@Api(value = "WechatPayController", tags = {"微信支付类"} )
 @Controller
 @RequestMapping("/wechatPay")
 @CrossOrigin
@@ -42,13 +46,13 @@ public class WechatPayController {
      * 此函数会被执行多次，如果支付状态已经修改为已支付，则下次再调的时候判断是否已经支付，如果已经支付了，则什么也执行
      *
      * @param request
-     * @param response
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "notifyWeiXinPay", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "notifyWeiXinPay",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "notifyWeiXinPay", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String notifyWeiXinPay(HttpServletRequest request, HttpServletResponse response) throws IOException, JDOMException {
+    public String notifyWeiXinPay(HttpServletRequest request) throws IOException, JDOMException {
         logger.info("微信支付回调");
         InputStream inStream = request.getInputStream();
         ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
@@ -85,10 +89,10 @@ public class WechatPayController {
             return StringUtil.GetMapToXML(returnData);
 
     }
-
-    @RequestMapping(value = "notifyWeiXinRefund", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "notifyWeiXinRefund",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "notifyWeiXinRefund", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String notifyWeiXinRefund(HttpServletRequest request, HttpServletResponse response) throws IOException, JDOMException, Exception {
+    public String notifyWeiXinRefund(HttpServletRequest request) throws Exception {
         logger.info("微信退款回调");
         InputStream inStream = request.getInputStream();
         ByteArrayOutputStream outSteam = new ByteArrayOutputStream();

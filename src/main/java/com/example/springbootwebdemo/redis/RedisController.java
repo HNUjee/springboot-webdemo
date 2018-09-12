@@ -1,10 +1,13 @@
 package com.example.springbootwebdemo.redis;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.core.types.RedisClientInfo;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -12,13 +15,15 @@ import java.util.concurrent.TimeUnit;
 
 //@RequestMapping("redis")
 //@RestController
+@Api(value = "RedisController|redis服务控制器")
 public class RedisController {
 //    @Autowired
     private StringRedisTemplate stringRedisTemplate;
 //    @Autowired
     private RedisTemplate redisTemplate;
 
-    @RequestMapping("/strRestTemplate")
+    @ApiOperation(value = "使用方式")
+    @PostMapping("/strRestTemplate")
     public String strRestTemplate(){
 
         stringRedisTemplate.execute(new RedisCallback<Object>() {
@@ -33,8 +38,8 @@ public class RedisController {
         System.out.println(valueOperations.get("strRedis"));
         return "StringRedisTemplate success!";
     }
-
-    @RequestMapping("/operation")
+    @ApiOperation(value = "operation")
+    @PostMapping("/operation")
     public String test(){
         //操作string,需要被序列化转换，建议使用StringRedisTemplate
         ValueOperations valueOperations = redisTemplate.opsForValue();

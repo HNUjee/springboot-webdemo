@@ -16,4 +16,5 @@
 注意事项：  
 
  &ensp;1使用redis需要在application.properties文件中将redis注释打开
-在项目中的redis包下将注解的注释解开。
+在项目中的redis包下将注解的注释解开。  
+ &ensp;2 swagger的接口文档请求地址：http://localhost/swagger-ui.html

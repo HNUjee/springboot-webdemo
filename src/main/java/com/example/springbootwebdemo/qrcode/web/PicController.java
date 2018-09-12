@@ -1,5 +1,9 @@
 package com.example.springbootwebdemo.qrcode.web;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,17 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.*;
 
+@Api(value = "PicController",tags = {"图片处理控制器"})
 @RequestMapping("qrcode")
 @RestController
 public class PicController {
 
-    @RequestMapping("/index")
+    @PostMapping("/index")
     public String index(){
         return "index";
     }
 
+    @ApiOperation(value = "upload", notes = "上传图片")
+    @ApiImplicitParam(name = "upload", required = true, type = "insert", dataType = "HttpServletRequest")
     @ResponseBody
-    @RequestMapping("/upload")
+    @PostMapping("/upload")
     public void uploadImg(HttpServletRequest request){
         FileOutputStream outputStream=null;
         InputStream inputStream=null;
@@ -55,12 +62,12 @@ public class PicController {
             }
         }
     }
-    @RequestMapping("/showPic")
+    @ApiOperation(value = "showPic")
+    @PostMapping("/showPic")
     public String showPic(){
         try {
             String encodePic = encodePic(new FileInputStream("D://test.jpg"));
             //在img标签下直接显示base64格式图片需要在前面加上:  "data:image/png;base64,"
-            System.out.println("-----------------------------------------");
             FileOutputStream fileOutputStream = new FileOutputStream("d://test.txt");
             try {
                 fileOutputStream.write(encodePic.getBytes());

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@Api(value = "MybatisController|mybatis注解的控制器") //用来解释该类的作用
+@Api(value = "MybatisController", tags = {"mybatis注解的控制器"}) //用来解释该类的作用
 @RequestMapping("mybatis")
 @RestController
 public class MybatisController {
@@ -27,7 +27,13 @@ public class MybatisController {
         List<Person> persons = personMapper.getPerson();
         return persons.toString();
     }
-
+  /*  @ApiOperation(value="修改用户密码", notes="根据用户id修改密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "userId", value = "用户ID", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType="query", name = "password", value = "旧密码", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "newPassword", value = "新密码", required = true, dataType = "String")
+    })*/
+    @ApiOperation(value="新增用户", notes="")
     @PostMapping("insertPerson")
     public void insertPerson(){
         personMapper.insertPerson("tom",20);
