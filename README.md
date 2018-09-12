@@ -1,4 +1,4 @@
-#WEB项目常用的功能组合
+**WEB项目常用的功能组合**
 
 功能介绍：    
      &ensp;1使用百度的富文本编辑器ueditor  
@@ -11,8 +11,9 @@
      &ensp;8 HTML的dom解析工具jsoup使用  
      &ensp;9 spring-data-jpa的集成  
      &ensp;10 使用ffmpeg获取视频的缩略图
+     &ensp;11 使用swagger生成api接口文档
 #
-注意事项：
+注意事项：  
 
-使用redis需要在application.properties文件中将redis注释打开
+ &ensp;1使用redis需要在application.properties文件中将redis注释打开
 在项目中的redis包下将注解的注释解开。
