@@ -1,6 +1,8 @@
 package com.example.springbootwebdemo.pay.wechatpay.controller;
 
-import com.example.springbootwebdemo.pay.wechatpay.config.WechatConfig;
+import com.example.springbootwebdemo.pay.wechatpay.config.*;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.jdom.JDOMException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -81,7 +83,7 @@ public class WechatPayController {
             returnData.put("return_code", "SUCCESS");
             returnData.put("return_msg", "OK");
             return StringUtil.GetMapToXML(returnData);
-        }
+
     }
 
     @RequestMapping(value = "notifyWeiXinRefund", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -141,21 +143,21 @@ public class WechatPayController {
                     return StringUtil.GetMapToXML(returnData);
                 } else {
                     // 退款回调失败
-                    logger.error("订单退款回调失败,未获取到加密数据");
+                    logger.info("订单退款回调失败,未获取到加密数据");
                     returnData.put("return_code", "FAIL");
                     returnData.put("return_msg", "订单退款回调失败,未获取到加密数据");
                     return StringUtil.GetMapToXML(returnData);
                 }
             } else {
                 // 退款回调失败
-                logger.error("订单退款回调失败");
+                logger.info("订单退款回调失败");
                 returnData.put("return_code", "FAIL");
                 returnData.put("return_msg", params.get("return_msg"));
                 return StringUtil.GetMapToXML(returnData);
             }
         } else {
             // 退款回调失败
-            logger.error("订单退款回调失败");
+            logger.info("订单退款回调失败");
             returnData.put("return_code", "FAIL");
             returnData.put("return_msg", "return_code不正确");
             return StringUtil.GetMapToXML(returnData);
