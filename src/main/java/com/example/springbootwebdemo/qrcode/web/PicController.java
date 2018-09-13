@@ -62,6 +62,7 @@ public class PicController {
             }
         }
     }
+
     @ApiOperation(value = "showPic")
     @PostMapping("/showPic")
     public String showPic(){
