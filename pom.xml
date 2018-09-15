@@ -81,6 +81,11 @@
             <artifactId>bcprov-jdk16</artifactId>
             <version>1.45</version>
         </dependency>
+        <!--aop-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
 
         <!--alipay-->
         <dependency>

@@ -12,7 +12,9 @@
      &ensp;9 spring-data-jpa的集成  
      &ensp;10 使用ffmpeg获取视频的缩略图
      &ensp;11 使用swagger生成api接口文档  
-     &ensp;12 RSA加密算法
+     &ensp;12 RSA加密算法  
+     &ensp;13 添加aop，通过包名和注解
+     
 #
 注意事项：  
 
